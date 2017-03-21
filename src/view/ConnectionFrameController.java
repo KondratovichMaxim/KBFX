@@ -1,5 +1,8 @@
 package view;
 
+import java.sql.SQLException;
+
+import db.WorkDB;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -45,11 +48,30 @@ public class ConnectionFrameController {
 	@FXML
 	private void handleCreateClick(){
 		
+		if(!valid()){
+			return;
+		}
+		
+		try {
+			WorkDB.create(url.getText(), name.getText(), login.getText(), password.getText());
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 		
 	}
 	@FXML
 	private void handleDeleteClick(){
 		
+		if(!valid()){
+			return;
+		}
+		
+		try {
+			WorkDB.deleteDB(url.getText(), name.getText(), login.getText(), password.getText());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	@FXML
 	private void handleConnectClick(){
