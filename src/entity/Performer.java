@@ -6,15 +6,23 @@ public class Performer {
 	private String name;
 	private String password;
 	private double k;
+
 	public Performer(int id_performer, String name, String password, double k) {
 		this.id_performer = id_performer;
 		this.name = name;
 		this.password = password;
 		this.k = k;
 	}
+
 	public Performer() {
 	}
-	
+
+	public Performer(String name, String password, double k) {
+		this.name = name;
+		this.password = password;
+		this.k = k;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -24,10 +32,10 @@ public class Performer {
 		temp = Double.doubleToLongBits(k);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,34 +61,43 @@ public class Performer {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return "Performer [id_performer=" + id_performer + ", name=" + name
-				+ ", password=" + password + ", k=" + k + "]";
+		return "Performer [id_performer=" + id_performer + ", name=" + name + ", password=" + password + ", k=" + k
+				+ "]";
 	}
+
 	public int getId_performer() {
 		return id_performer;
 	}
+
 	public void setId_performer(int id_performer) {
 		this.id_performer = id_performer;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public double getK() {
 		return k;
 	}
+
 	public void setK(double k) {
 		this.k = k;
 	}
-	
+
 }

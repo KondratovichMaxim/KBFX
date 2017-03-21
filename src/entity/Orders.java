@@ -8,9 +8,10 @@ public class Orders {
 	private int square;
 	private int floor;
 	private double k;
-	private String status;
+	private int status;
 	
-	public Orders(int id, int id_client, int id_performer, int square, int floor, double k, String status) {
+	public Orders(int id, int id_client, int id_performer, int square, int floor, double k, int status) {
+		super();
 		this.id = id;
 		this.id_client = id_client;
 		this.id_performer = id_performer;
@@ -19,12 +20,26 @@ public class Orders {
 		this.k = k;
 		this.status = status;
 	}
-	
-	public Orders() {
+
+	public Orders(int id_client, int id_performer, int square, int floor, double k, int status) {
+		super();
+		this.id_client = id_client;
+		this.id_performer = id_performer;
+		this.square = square;
+		this.floor = floor;
+		this.k = k;
+		this.status = status;
 	}
 
-	
-	
+	public Orders(int id_client, int square, int floor, double k, int status) {
+		super();
+		this.id_client = id_client;
+		this.square = square;
+		this.floor = floor;
+		this.k = k;
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -37,7 +52,7 @@ public class Orders {
 		temp = Double.doubleToLongBits(k);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + square;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + status;
 		return result;
 	}
 
@@ -62,18 +77,14 @@ public class Orders {
 			return false;
 		if (square != other.square)
 			return false;
-		if (status == null) {
-			if (other.status != null)
-				return false;
-		} else if (!status.equals(other.status))
+		if (status != other.status)
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Orders [id=" + id + ", id_client=" + id_client
-				+ ", id_performer=" + id_performer + ", square=" + square
+		return "Orders [id=" + id + ", id_client=" + id_client + ", id_performer=" + id_performer + ", square=" + square
 				+ ", floor=" + floor + ", k=" + k + ", status=" + status + "]";
 	}
 
@@ -125,14 +136,11 @@ public class Orders {
 		this.k = k;
 	}
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
-	
 }

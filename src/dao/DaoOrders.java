@@ -26,7 +26,7 @@ public class DaoOrders implements DaoInterface<Orders> {
 			ps.setInt(4, ob.getSquare());
 			ps.setInt(5, ob.getFloor());
 			ps.setDouble(6, ob.getK());
-			ps.setString(7, ob.getStatus());
+			ps.setInt(7, ob.getStatus());
 			ps.execute();
 		} catch (SQLException e) {
 
@@ -47,7 +47,7 @@ public class DaoOrders implements DaoInterface<Orders> {
 			ps.setInt(3, ob.getSquare());
 			ps.setInt(4, ob.getFloor());
 			ps.setDouble(5, ob.getK());
-			ps.setString(6, ob.getStatus());
+			ps.setInt(6, ob.getStatus());
 			ps.execute();
 		} catch (SQLException e) {
 
