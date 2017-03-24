@@ -1,6 +1,5 @@
 package view;
 
-import java.sql.SQLException;
 
 import db.WorkDB;
 import javafx.fxml.FXML;

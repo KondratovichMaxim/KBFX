@@ -23,6 +23,11 @@ public class Performer {
 		this.k = k;
 	}
 
+	public Performer(String name, String password) {
+		this.name = name;
+		this.password = password;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
