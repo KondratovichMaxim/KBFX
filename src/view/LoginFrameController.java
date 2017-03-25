@@ -1,8 +1,13 @@
 package view;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import application.Main;
+import dao.DaoClient;
+import dao.DaoPerformer;
+import db.DB;
 import entity.Client;
 import entity.Performer;
 import javafx.fxml.FXML;
@@ -36,6 +41,8 @@ public class LoginFrameController {
 	String role;
 
 	Stage st;
+	
+	DB db;
 
 	Object person;
 
@@ -59,20 +66,45 @@ public class LoginFrameController {
 			st.setResizable(false);
 			st.sizeToScene();
 			
-			Class t = Class.forName("New"+String.valueOf( role.charAt(0) ).toUpperCase()+role.substring(1, role.length())+"FrameController");
-			t controller = loader.getController(); //TODO Починить это говно
-			loader.setController(controller);
+			showNewUser(loader, st);
 			
-			controller.setStage(st);
-
-			st.showAndWait();
-			
-			person = controller.person();
-			this.st.close();
+			if(person != null){
+				
+				this.st.close();
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 			person = null;
+		}
+	}
+	
+	private void showNewUser(FXMLLoader loader,Stage st){
+		if(role =="client"){
+			NewClientFrameController controller = loader.getController(); 
+			loader.setController(controller);
+			controller.setStage(st);
+			st.showAndWait();
+			person = controller.person();
+			if(person != null){
+				DaoClient dc = new DaoClient(db);
+				dc.insert((Client)person);
+			}
+		}
+		else{
+			NewPerformerFrameController controller = loader.getController(); 
+			loader.setController(controller);
+			controller.setStage(st);
+			st.showAndWait();
+			person = controller.person();
+			if(person != null){
+				DaoPerformer dc = new DaoPerformer(db);
+				dc.insert((Performer)person);
+			}
+		}
+		if(person != null){
+			
+			this.st.close();
 		}
 	}
 
@@ -82,9 +114,49 @@ public class LoginFrameController {
 			return;
 		}
 		if (role == "client") {
-			person = new Client(name.getText(), password.getText());
+			try {
+				if(!db.query("SELECT * FROM "+role+" WHERE name='"+name.getText()+"' AND password='"+password.getText()+"'").isBeforeFirst()){
+					thowErrorDialog("Name or password wrong");
+					return;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			ResultSet rs = db.query("SELECT * FROM client WHERE name='"+((Client)person).getName()+"' AND password='"+((Client)person).getPassword()+"'");
+			Client t = new Client();
+			try {
+				if(rs.next()){
+					t.setId_client(rs.getInt(1));
+					t.setName(rs.getString(2));
+					t.setPassword(rs.getString(3));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			person = t;
 		} else {// if role == performer
-			person = new Performer(name.getText(), password.getText());
+			try {
+				if(!db.query("SELECT * FROM "+role+" WHERE name='"+name.getText()+"' AND password='"+password.getText()+"'").isBeforeFirst()){
+					thowErrorDialog("Name or password wrong");
+					return;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			ResultSet rs = db.query("SELECT * FROM performer WHERE name='"+((Performer)person).getName()+"' AND password='"+((Performer)person).getPassword()+"'");
+			Performer t = new Performer();
+			try {
+				if(rs.next()){
+					t.setId_performer(rs.getInt(1));
+					t.setName(rs.getString(2));
+					t.setPassword(rs.getString(3));
+					t.setK(rs.getFloat(4));
+					thowErrorDialog(t.getId_performer()+" "+t.getName()+" "+t.getPassword()+" "+t.getK());
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			person = t;
 		}
 		st.close();
 	}
@@ -116,5 +188,10 @@ public class LoginFrameController {
 
 	public Object person() {
 		return person;
+	}
+
+	public void setDB(DB db) {
+		this.db = db;
+		
 	}
 }

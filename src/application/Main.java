@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import db.DB;
 import entity.Client;
 import entity.Performer;
 import javafx.application.Application;
@@ -16,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
+	
+	DB db;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -39,7 +42,7 @@ public class Main extends Application {
 					break;
 				}
 			} else {
-				System.out.println("fail during connecting");
+				System.out.println("cancel or fail during connection");
 			}
 
 		} catch (Exception e) {
@@ -115,6 +118,7 @@ public class Main extends Application {
 			
 			controller.setStage(st);
 			controller.setRole(role);
+			controller.setDB(db);
 
 			st.showAndWait();
 			
@@ -172,7 +176,9 @@ public class Main extends Application {
 			controller.setStage(st);
 
 			st.showAndWait();
-
+			
+			db = controller.getDB();
+			
 			return controller.result();
 		} catch (IOException e) {
 			e.printStackTrace();

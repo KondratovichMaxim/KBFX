@@ -1,6 +1,7 @@
 package view;
 
 
+import db.DB;
 import db.WorkDB;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -35,6 +36,8 @@ public class ConnectionFrameController {
 	Button connect;
 	
 	boolean state;
+	
+	DB db;
 	
 	public ConnectionFrameController() {
 		state = false;
@@ -77,6 +80,13 @@ public class ConnectionFrameController {
 		
 		if(!valid()){
 			return;
+		}
+		
+		try {
+			db = new DB(url.getText(), name.getText(), login.getText(), password.getText());
+		} catch (Exception e) {
+			thowErrorDialog("Did not found database");
+			e.printStackTrace();
 		}
 		
 		state = true;
@@ -128,6 +138,10 @@ public class ConnectionFrameController {
 	public void setStage(Stage primaryStage) {
 
 		st = primaryStage;
+	}
+
+	public DB getDB() {
+		return db;
 	}
 
 }
